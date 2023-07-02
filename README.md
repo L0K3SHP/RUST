@@ -264,3 +264,189 @@ fn main() {
    println!("{:?}",slice);
   }
 ```
+
+## Strings
+-In Rust, strings are represented using three main types: str, &str, and String.
+- str is a primitive type that represents a sequence of Unicode scalar values. It is often used as a slice type to represent borrowed string data. For example, a function that takes a &str argument can accept either a string slice or a string literal.
+- &str is a string slice type that represents a borrowed view into a sequence of Unicode scalar values. It is a read-only type that cannot be modified. String slices are often used to pass string data between functions or to extract substrings from a larger string. For example:
+```
+fn main() {
+  let message = "hello, world!";
+  let first_word = &message[0..5];
+  println!("The first word is {}", first_word);
+}
+```
+- In this code, message is a string literal that is assigned to a variable. The & symbol is used to create a string slice that represents the first five characters of the message string. This string slice is then printed using the println! macro.
+- String is a dynamically-sized string type that represents a sequence of Unicode scalar values. It is a mutable type that can be modified by appending, inserting, or removing characters. Strings are often used to represent user input, file data, or other dynamic text content. For example:
+```
+fn main() {
+  let mut message = String::from("hello");
+  message.push_str(", world!");
+  println!("{}", message);
+}
+```
+- In this code, a new String is created using the String::from function, which takes a string literal as an argument. The push_str method is then used to append another string to the end of the message string. The final println! statement prints the modified message string.
+- It's important to note that String and &str are different types that represent different kinds of string data. String is a dynamically-sized string that is owned by the program, while &str is a borrowed view into a string that is owned by another variable or data structure. Understanding the differences between these types and how to use them correctly is an important part of writing Rust programs that handle string data
+```
+fn main() {
+    // STRINGS - Their are several types
+    // Likely only use two: String and str/&str
+    //str - string slice, &str - borrowed sttring slice- cannot be modified
+    // String - data can be modified
+    // &str - Essentially a subset of a string
+
+    let greeting = "Hello their";
+
+    let mut name = "adsdadadwqa";
+
+    // String eg 1
+    let mut name1 = String::new();
+    name1.push_str("Test");
+    println!("{}",name1);
+
+    // String eg 2
+    let name2 = "asdsd".to_string();
+    println!("{}",name2);
+
+    // String eg 3
+    let name3 = String::from("awsd");
+    println!("{}",name3);
+```
+
+### Escaping
+- In Rust, character escaping is used to represent special characters in string literals and character literals. A backslash \ is used as an escape character to indicate that the following character has a special meaning.
+- The most common escape sequences in Rust are:
+```
+\\: backslash
+\": double quote
+\': single quote
+\n: newline
+\r: carriage return
+\t: tab
+\0: null character
+\xNN: hexadecimal escape sequence, where NN is a two-digit hexadecimal number that represents a Unicode scalar value
+\u{NNNN}: Unicode escape sequence, where NNNN is a four-digit hexadecimal number that represents a Unicode scalar value
+For example:
+
+let message = "Hello, \"world\"!\n";
+println!("{}", message);
+```
+- In this code, the string literal "Hello, \"world\"!\n" contains two escaped characters: \" to represent a double quote character, and \n to represent a newline character.
+- Similarly, character literals can be escaped using the same backslash notation. For example:
+```
+let heart = '\u{2764}';
+println!("{}", heart);
+```
+- In this code, the \u{2764} escape sequence is used to represent the Unicode scalar value for a heart symbol.
+- It's important to properly escape special characters in Rust string and character literals to avoid compilation errors and unexpected behavior. Rust also provides raw string literals, which can be used to include backslashes and special characters without escaping them. Raw string literals are declared using the r#"..."# syntax, where the # characters can be replaced with any other character that does not appear inside the string. For example:
+```
+let message = r#"Hello, "world"!\n"#;
+println!("{}", message);
+``` 
+- In this code, the raw string literal r#"Hello, "world"!\n"# includes the double quote and newline characters without escaping them.
+
+## Modules and Libraries
+- In Rust, modules are used to organize code into groups and provide a way to control visibility and access to different parts of a program. Modules can contain other modules, as well as functions, structs, enums, and other items.
+- Modules are declared using the mod keyword, followed by the name of the module and its contents inside curly braces {}. For example:
+```
+mod my_module {
+  fn hello() {
+    println!("Hello, world!");
+  }
+}
+```
+- In this code, a new module named my_module is declared with a single function hello().
+- Modules in Rust are used to control visibility and access to different parts of a program using the pub keyword. Items declared inside a module are private by default and can only be accessed from within the same module. To make an item public, the pub keyword is used. For example:
+```
+mod my_module { 
+  pub fn hello() {
+    println!("Hello, world!");
+  }
+}
+```
+- In this code, the hello() function is declared as public using the pub keyword. This means that it can be accessed from outside the my_module module.
+- Libraries in Rust are collections of code that can be used by other programs or libraries. Rust libraries are compiled into a single file with a .rlib extension and can be used by including them in the Cargo.toml file of another Rust project. For example:
+```
+[dependencies]
+my_library = { version = "1.0", path = "../path/to/my_library" }
+```
+- In this code, a dependency named my_library is added to the dependencies section of the Cargo.toml file. The version parameter specifies the version of the library to use, and the path parameter specifies the path to the directory containing the library.
+- Libraries in Rust can contain one or more modules, as well as other items such as structs, enums, and traits. The pub keyword is used to make items in a library public and accessible to other programs and libraries.
+- Overall, modules and libraries in Rust are powerful tools for organizing and sharing code, and they play an important role in the Rust ecosystem.
+
+### User Input 
+- In Rust, user input can be obtained from the command line or from the standard input stream (stdin). The std::io module provides functions and types for reading input from these sources.
+- To read user input from the command line, the std::env module can be used to access the command line arguments passed to the program. For example:
+```
+use std::env;
+
+fn main() {
+  let args: Vec<String> = env::args().collect();
+  println!("The first argument is {}", args[1]);
+}
+```
+- In this code, the env::args() function is used to obtain a vector of command line arguments passed to the program. The first argument is accessed using indexing notation and printed using the println! macro.
+- To read user input from the standard input stream, the std::io::stdin() function can be used to obtain a handle to the input stream. The std::io::BufRead trait provides functions for reading lines of input from this stream. For example:
+```
+use std::io::{self, BufRead};
+
+fn main() {
+  let stdin = io::stdin();
+  for line in stdin.lock().lines() {
+    println!("{}", line.unwrap());
+  }
+}
+```
+- In this code, the io::stdin() function is used to obtain a handle to the standard input stream. The stdin.lock() method is then used to obtain a locked reference to the input stream, which can be used to read lines of input using the lines() method. Each line of input is printed using the println! macro.
+- It's important to properly handle user input in Rust to avoid errors and security vulnerabilities. User input should be validated and sanitized to prevent unexpected behavior or malicious attacks. Rust provides several libraries and functions for handling user input in a safe and secure way, such as the std::io::BufReader and std::io::Read traits, the regex crate for regular expressions, and the serde crate for serializing and deserializing data.
+```
+#![allow(unused)]
+// This is comments
+
+use std::io;
+// user std::*;
+
+fn main() {
+    println!("Who are you?");
+    let mut name = String::new();
+    io::stdin().read_line( &mut name);
+    println!("Welcome {}",name.trim_end());
+  }
+```
+
+## Math
+- In Rust, math operators are used to perform arithmetic operations on numerical values. Rust supports the standard math operators, including addition, subtraction, multiplication, division, and remainder, as well as bitwise operators, shifting operators, and comparison operators.
+- The standard math operators in Rust are:
+```
++: addition
+-: subtraction
+*: multiplication
+/: division
+%: remainder
+```
+- For example:
+```
+let x = 10;
+let y = 3;
+let sum = x + y;
+let diff = x - y;
+let product = x * y;
+let quotient = x / y;
+let remainder = x % y;
+```
+- In this code, the +, -, *, /, and % operators are used to perform arithmetic operations on the x and y variables. The results of these operations are stored in new variables named sum, diff, product, quotient, and remainder, respectively.
+```
+fn main() {
+    let x = 15;
+    let y = 4;
+    let x_float = x as f64;
+    let y_float = y as f64;
+
+    println!("{} + {} = {}", x,y,x+y);
+    println!("{} - {} = {}", x,y,x-y); 
+    println!("{} * {} = {}", x,y,x*y);
+    println!("{} / {} = {}", x,y,x_float/y_float);
+    println!("{} % {} = {}", x,y,x%y);
+    println!("{}^{} = {}", x,y,i32::pow(x,y.try_into().unwrap()));
+  }
+```
