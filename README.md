@@ -144,3 +144,123 @@ println!("x: {}", x);
 - In this code, x is first declared as a mutable variable and assigned the value 42. It is then reassigned the value 43. Finally, x is shadowed by a new declaration that makes it immutable and assigns it the current value of x. The final println! statement will print the value 43.
 - Shadowing is a powerful feature in Rust, but it can also be confusing if used excessively or without a clear purpose. It's important to use shadowing judiciously and to choose descriptive variable names to avoid name collisions and improve code readability.
 
+## Primitive (Compund Types)
+
+### Tuples
+- In Rust, a tuple is a fixed-size collection of elements of different types. Tuples are used to group related data together and provide a way to define custom types with specific behavior and properties.
+- Tuples are declared using parentheses ( and ), and the elements are separated by commas ,. For example:```let person = ("John", 42, 1.72);```. In this code, person is a tuple that contains three elements: a string, an integer, and a float.
+- Tuples in Rust can be accessed using pattern matching. For example:
+```
+let person = ("John", 42, 1.72);
+let (name, age, height) = person;
+println!("Name: {}, Age: {}, Height: {}", name, age, height);
+```
+- In this code, the let statement uses pattern matching to extract the three elements of the person tuple into separate variables: name, age, and height. These variables are then used to print out the values of the tuple elements.
+- Tuples in Rust can also be indexed using dot notation, starting from zero. For example:
+```
+let person = ("John", 42, 1.72);
+println!("Name: {}, Age: {}, Height: {}", person.0, person.1, person.2);
+```
+- In this code, the dot notation is used to access the first, second, and third elements of the person tuple, respectively.
+- Tuples in Rust can contain any combination of variable types, as long as their number is fixed at compile time. Tuples are often used to return multiple values from a function, or to group related data together in a convenient and expressive way.
+```
+fn main() {
+    // COmpound types -Tuples % Arrays
+   // Tuples idicated - ()
+    // Max value of tuple - 12
+
+    let stu_a = ("Lokesh",'A',7.48);
+    
+    // Type 1 by indexing
+    let name_stu_a = stu_a.0;
+    let grade_stu_a = stu_a.1;
+    let gpa_stu_a = stu_a.2;
+    println!("My name is {}, my class garde is {} and overall gpa is {}", name_stu_a, grade_stu_a,gpa_stu_a);
+
+    // Type 2 
+    let (name_stu_a1, grade_stu_a1, gpa_stu_a1) = stu_a;
+    println!("My name is {}, my class garde is {} and overall gpa is {}", name_stu_a1, grade_stu_a1,gpa_stu_a1);
+  }
+```
+
+### Arrays
+- In Rust, an array is a fixed-size collection of elements of the same type. Arrays are used to store multiple values of the same type in a contiguous memory block and provide a way to access these values using a single variable name.
+- Arrays are declared using square brackets [ and ], and the elements are separated by commas ,. The length of an array is part of its type, and must be known at compile time. For example:```let numbers = [1, 2, 3, 4, 5]; ```In this code, numbers is an array that contains five integer elements.
+- Arrays in Rust can be accessed using indexing notation, starting from zero. For example:
+```
+let numbers = [1, 2, 3, 4, 5];
+println!("The first number is {}", numbers[0]);
+```
+- In this code, the indexing notation is used to access the first element of the numbers array.
+- Arrays in Rust can also be iterated using a for loop. For example:
+```
+let numbers = [1, 2, 3, 4, 5];
+for number in numbers.iter() { println!("{}", number); }
+```
+- In this code, the for loop is used to iterate over the elements of the numbers array using the iter() method.
+- It's important to note that arrays in Rust have a fixed size that cannot be changed at runtime. If you need a collection that can grow or shrink in size, you should use a Vec (vector) instead of an array. Rust arrays are often used to represent fixed-size data structures, such as matrices or game boards, or to pass a fixed number of values between functions or threads.
+```
+fn main() {
+    // COmpound types -Tuples % Arrays
+    // Array idicated - []
+    // Max value of Array  - 32 - similar data type
+
+    let stu_a = ["A", "B", "C"];
+
+    println!("First student is {}", stu_a[0]);
+    println!("2nd student is {}", stu_a[1]);
+    println!("3rd student is {}", stu_a[2]);
+  }
+```
+
+### Slices 
+- In Rust, slices are a lightweight view into a contiguous sequence of elements in a collection, such as an array or a vector. Slices provide a way to access a subset of the elements in a collection without creating a new collection.
+- Slices are denoted using a range of indices enclosed in square brackets, such as [1..3] or [..5]. A slice can be created from an existing collection by specifying a range of indices:
+```
+let arr = [1, 2, 3, 4, 5];
+let slice = &arr[1..3];
+println!("{:?}", slice); // prints "[2, 3]"
+```
+- In this code, a slice is created from the arr array using the range of indices 1..3, which selects the second and third elements of the array. The resulting slice is stored in the slice variable, which is then printed to the console.
+- Slices can be used to pass a subset of elements in a collection to a function:
+```
+fn sum(slice: &[i32]) -> i32 {
+  let mut total = 0;
+  for &x in slice {
+    total += x;
+  }
+  total
+}
+
+let arr = [1, 2, 3, 4, 5];
+let slice = &arr[1..3];
+let total = sum(slice);
+println!("The sum is {}", total); // prints "The sum is 5"
+```
+- In this code, a function named sum takes a slice of i32 elements as a parameter and returns the sum of its elements. A slice is created from the arr array using the range of indices 1..3, and the sum function is called with the slice as an argument. The resulting sum is then printed to the console.
+- Slices can also be used to modify a subset of elements in a collection:
+```
+let mut arr = [1, 2, 3, 4, 5];
+let slice = &mut arr[1..3];
+slice[0] = 6;
+slice[1] = 7;
+println!("{:?}", arr); // prints "[1, 6, 7, 4, 5]"
+```
+- In this code, a mutable slice is created from the arr array using the range of indices 1..3, which selects the second and third elements of the array. The values of these elements are then changed to 6 and 7, respectively. The resulting array is then printed to the console.
+- Overall, slices in Rust are a lightweight and powerful tool for accessing and manipulating a subset of elements in a collection without creating a new collection. Slices can be created from arrays, vectors, and other collections, and can be used to pass subsets of elements to functions or modify a subset of elements in a collection.
+```
+fn main() {
+   // ':?' - Debug Formate
+
+   let mut abc = [1,2,3,4,5,6];
+   let slice = & mut abc[0..3];
+   println!("{:?}",slice);
+
+   // replace data
+
+   slice[0] = 10;
+   slice[1] = 20;
+
+   println!("{:?}",slice);
+  }
+```
