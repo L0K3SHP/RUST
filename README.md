@@ -450,3 +450,45 @@ fn main() {
     println!("{}^{} = {}", x,y,i32::pow(x,y.try_into().unwrap()));
   }
 ```
+
+## Dependencies
+- In Rust, dependencies are external packages or libraries that are used by a Rust project. Dependencies can be added to a Rust project using the Cargo.toml file and the Cargo package manager.
+- The Cargo.toml file is a configuration file that defines the metadata and dependencies of a Rust project. The dependencies section of the Cargo.toml file is used to list the external packages or libraries that the project depends on. For example:
+```
+[dependencies]
+rand = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+```
+- In this code, the dependencies section lists two external packages: rand and serde. The rand package is specified with a version number of 0.8, while the serde package is specified with a version number of 1.0 and a feature flag of derive.
+- To add a new dependency to a Rust project, the package name and version number can be added to the dependencies section of the Cargo.toml file. The package version number can be specified as an exact version number, a version range, or a wildcard. For example:
+```
+"0.8": exact version number
+">=0.8,<1.0": version range
+"*": wildcard
+```
+- After adding a new dependency to the Cargo.toml file, the dependency can be installed and included in the project using the cargo build command. The cargo build command checks for any missing dependencies and downloads them from the specified package repository. Once the dependencies are installed, they can be imported and used in the Rust code using the use keyword.
+- For example, to use the rand package in a Rust program, the following code can be used:
+```
+use rand::Rng;
+
+fn main() {
+  let mut rng = rand::thread_rng();
+  let random_number = rng.gen::<u32>();
+  println!("Random number: {}", random_number);
+}
+```
+- In this code, the rand::Rng trait is imported using the use keyword. The rand::thread_rng() function is then used to obtain a random number generator, which is used to generate a random u32 number using the rng.gen::<u32>() method.
+- Overall, dependencies in Rust are a powerful tool for reusing existing code, reducing development time, and improving the quality of Rust projects. The Cargo package manager and the Cargo.toml configuration file make it easy to manage dependencies and integrate external packages and libraries into Rust projects.
+```
+cargo.toml
+[dependencies]
+rand = "0.8.4"
+
+main.rs
+fn main()
+{
+    let x = rand::thread_rng().gen_range(1..101);
+    println!("Random number is {}",x);
+}
+```
+
