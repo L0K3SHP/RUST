@@ -491,4 +491,104 @@ fn main()
     println!("Random number is {}",x);
 }
 ```
+## Control Flow
+### Comparison Operators and Truth tables
+- Comparison operators are used to compare the values of two variables or expressions and produce a Boolean result. The comparison operators in Rust are:
+```
+==: equality
+!=: inequality
+<: less than
+<=: less than or equal to
+>: greater than
+>=: greater than or equal to
+```
+- For example:
+```
+let x = 10;
+let y = 3;
+let is_equal = x == y;
+let is_not_equal = x != y;
+let is_less_than = x < y;
+let is_greater_than_or_equal_to = x >= y;
+```
+- In this code, the ==, !=, <, and >= operators are used to compare the values of the x and y variables and produce Boolean results stored in new variables named is_equal, is_not_equal, is_less_than, and is_greater_than_or_equal_to, respectively.
+- In Rust, truth tables can be used to evaluate the Boolean expressions and logical operations that produce Boolean results. A truth table is a table that lists all possible combinations of input values for a given expression or operation, and the resulting output values. Truth tables can be used to determine the truth value of complex logical expressions, to simplify Boolean expressions using the laws of Boolean algebra, and to verify the correctness of circuits and programs that use Boolean logic.
+- In Rust, Boolean expressions are evaluated using the bool type, which can have two possible values: true or false. Logical operations in Rust, such as && (logical AND), || (logical OR), and ! (logical NOT), produce Boolean results based on the truth values of their input expressions.
+- A truth table for a logical operation lists all possible combinations of input values for the input expressions, and the resulting output values. For example, the truth table for the && (logical AND) operation is:
+![image](https://github.com/L0K3SHP/RUST/assets/42104811/57c88a21-e27b-416a-af71-3f255a7c6b3e)
+-This truth table shows that the logical AND operation produces a true result only when both input expressions are true. Otherwise, the result is false.
+- Similarly, the truth table for the || (logical OR) operation is:
+![image](https://github.com/L0K3SHP/RUST/assets/42104811/bfa78a75-54a9-4fc9-885d-9e4a03af2771)
+- This truth table shows that the logical OR operation produces a true result when at least one of the input expressions is true. Otherwise, the result is false.
+- The truth table for the ! (logical NOT) operation is:
+![image](https://github.com/L0K3SHP/RUST/assets/42104811/b48378fe-e833-46da-a123-ac22ea670d92)
+- This truth table shows that the logical NOT operation produces a true result when the input expression is false, and a false result when the input expression is true.
+- Overall, truth tables in Rust are a powerful tool for evaluating Boolean expressions and logical operations and for verifying the correctness of programs that use Boolean logic.
+```
+fn main() {
+    let a = 5;
+    let b = 10;
+    let c = true;
+    let d = false;
 
+    println!("a > b: {}", a > b); // false
+    println!("a >= b: {}", a >= b); // false
+    println!("a < b: {}", a < b); // true
+    println!("a <= b: {}", a <= b); // true
+    println!("a == b: {}", a == b); // false
+    println!("a != b: {}", a != b); // true
+    println!("True or False: {}", c || d); //true
+    println!("True or True: {}", c || c); //true
+    println!("False or False: {}", d || d); //false
+    println!("True and False: {}", c && d); //false
+    println!("True and True: {}", c && c); //true
+    println!("False and False: {}", d && d); //false
+}
+```
+### Conditional Statements
+- In Rust, conditional statements are used to control the flow of execution based on Boolean conditions. Rust supports two types of conditional statements: if statements and match statements.
+- if statements are used to execute a block of code if a condition is true. An if statement can also include one or more else if clauses and an optional else clause to handle different cases. For example:
+```
+let x = 10;
+if x > 0 {
+  println!("x is positive");
+} else if x < 0 {
+  println!("x is negative");
+} else {
+  println!("x is zero");
+}
+```
+- In this code, an if statement is used to check whether the value of x is positive, negative, or zero. If x is positive, the first branch of the if statement is executed and the message "x is positive" is printed. If x is negative, the second branch of the if statement is executed and the message "x is negative" is printed. Otherwise, the third branch of the if statement is executed and the message "x is zero" is printed.
+- Overall, conditional statements in Rust are a powerful tool for controlling the flow of execution based on Boolean conditions and matching values against patterns. The if statement and match statement provide different ways to handle different cases and make Rust code more expressive and concise.
+```
+#![allow(unused)]
+
+use std::io;
+use rand::Rng;
+
+fn main() {
+    //if, else if, else
+
+    println!("How much money do you have?");
+    let mut input_money = String::new();
+    io::stdin().read_line(&mut input_money);
+
+    let money: i32 = input_money.trim().parse().expect("Entry was not an integer");
+
+    println!("How old are you?");
+    let mut input_age = String::new();
+    io::stdin().read_line(&mut input_age);
+
+    let age: i32 = input_age.trim().parse().expect("Entry was not an integer");
+
+    if (age >= 21) && (money >= 5) {
+        println!("We're getting a drink!")
+    } else if (age >=21) && (money < 5) {
+        println!("Come back with more money!")
+    } else if (age < 21) && (money >= 5) {
+        println!("Nice try, kid!")
+    } else {
+        println!("You're too young and too poor.")
+    };
+}
+```
