@@ -592,3 +592,47 @@ fn main() {
     };
 }
 ```
+
+### Match
+- In Rust, conditional statements are used to control the flow of execution based on Boolean conditions. Rust supports two types of conditional statements: if statements and match statements.
+- match statements are used to match a value against a set of patterns and execute the corresponding code for the first matching pattern. A match statement can include one or more arms, which consist of a pattern and the corresponding code to execute. For example:
+```
+let x = 3;
+match x {
+  0 => println!("x is zero"),
+  1 | 2 => println!("x is one or two"), 
+  _ => println!("x is something else"),
+}
+```
+- In this code, a match statement is used to match the value of x against a set of patterns. The first pattern 0 matches the value of x if it is zero, and the corresponding message "x is zero" is printed. The second pattern 1 | 2 matches the value of x if it is either one or two, and the corresponding message "x is one or two" is printed. The underscore (_) pattern is a catch-all pattern that matches any value that hasn't been matched by the previous patterns, and the corresponding message "x is something else" is printed.
+- Overall, conditional statements in Rust are a powerful tool for controlling the flow of execution based on Boolean conditions and matching values against patterns. The if statement and match statement provide different ways to handle different cases and make Rust code more expressive and concise.
+```
+#![allow(unused)]
+// This is comments
+
+use std::cmp::Ordering;
+fn main() {
+  // Match - matching arm and all possible values must be covered
+
+  //Type 1
+  let cadidancy_age = 33;
+
+  match cadidancy_age{
+    1..=24 => println!("Cannot ho;d office"),
+    25..=29 => println!("Can run for the House"),
+    30..=34 => println!("Can run for the Senate"),
+    35..=i32::MAX => println!("Can run for President"),
+    _=> println!("Are you an infant?")
+  };
+
+
+  // Type 2 use std::cmp::Ordering;
+  let age = 33;
+  let drink_age = 21;
+  match age.cmp(&drink_age){
+    Ordering::Less => println!("Cannot drink"),
+    Ordering::Equal => println!("Woo, party sharty"),
+    Ordering::Greater => println!("Can drink"),
+  }
+  }
+```
