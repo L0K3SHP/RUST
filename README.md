@@ -636,3 +636,131 @@ fn main() {
   }
   }
 ```
+
+### Loops
+- In Rust, loops are used to repeat a block of code until a certain condition is met. Rust provides several loop constructs, including loop, while, and for loops.
+- The loop statement is used to repeat a block of code indefinitely until a break statement is encountered. For example:
+```
+let mut count = 0;
+loop {
+  count += 1;
+  println!("Count: {}", count);
+  if count == 10 {
+    break;
+  }
+}
+```
+- In this code, a loop statement is used to repeat a block of code that increments a counter and prints its value. The loop continues until the counter reaches a value of 10, at which point the break statement is encountered and the loop is terminated.
+- The while statement is used to repeat a block of code while a certain condition is true. For example:
+```
+let mut count = 0;
+while count < 10 {
+  count += 1;
+  println!("Count: {}", count);
+}
+```
+- In this code, a while statement is used to repeat a block of code that increments a counter and prints its value while the counter is less than 10. The loop terminates when the counter reaches a value of 10 and the condition becomes false.
+- The for statement is used to iterate over a range, an iterator, or a collection of elements. For example:
+```
+for i in 1..=10 {
+  println!("Count: {}", i);
+}
+
+let numbers = vec![1, 2, 3, 4, 5];
+
+for num in numbers {
+  println!("Number: {}", num);
+}
+```
+- In the first code block, a for statement is used to iterate over a range of values from 1 to 10, and print each value. The ..= operator is used to include the upper bound in the range.
+- In the second code block, a for statement is used to iterate over a vector of numbers and print each number. The loop terminates when all elements in the vector have been processed.
+- Overall, loops in Rust are a powerful tool for repeating a block of code until a certain condition is met or all elements in a collection have been processed. The loop, while, and for loops provide different ways to handle different cases and make Rust code more expressive and concise.
+```
+fn main() {
+  // Loops - For, While, Infinite loop
+
+  // For loop - start to finish of am iterrate
+
+  let mut veg = ["Cabbage", "Peas", "onion"];
+  for i in veg.iter(){
+    println!("{}",i);
+  }
+
+  //While loop - execute until its true
+  let mut y = 0;
+  while y <= 10{
+    println!("{}",y);
+    y +=1;
+  }
+
+  //loop - Infinite loops
+  let mut a = 0;
+
+  println!("Counting!");
+  loop{
+    a += 1;
+    println!("{}", a);
+    if a == 10{
+      println!("Reach 10");
+      continue;
+    }else if a == 20{
+      println!("Reach 20");
+      break;
+    }
+  }
+  }
+```
+
+## Functions
+- In Rust, functions are used to encapsulate a block of code that performs a specific task and can be called from other parts of the program. Functions in Rust are defined using the fn keyword, followed by the function name, the list of parameters enclosed in parentheses, and the function body enclosed in curly braces. For example:
+```
+fn greet(name: &str) {
+  println!("Hello, {}!", name);
+}
+```
+- In this code, a function named greet is defined that takes a single parameter name of type &str, which is a reference to a string. The function body simply prints a greeting message that includes the name.
+- Functions in Rust can also return a value using the -> syntax, followed by the return type. For example:
+```
+fn add(x: i32, y: i32) -> i32 {
+  x + y
+}
+```
+- In this code, a function named add is defined that takes two parameters x and y of type i32, which are integers. The function body adds the two integers and returns the result as an i32 value.
+- Functions in Rust can have default parameter values, which are used when a parameter value is not provided. For example:
+```
+fn repeat(word: &str, count: u32) -> String {
+  word.repeat(count as usize)
+} 
+
+fn main() { 
+  println!("{}", repeat("hello", 3)); // prints "hellohellohello"
+  println!("{}", repeat("world", 5)); // prints "worldworldworldworldworld"
+  println!("{}", repeat("bye", 1)); // prints "bye"
+}
+```
+- In this code, a function named repeat is defined that takes two parameters word and count. The count parameter has a default value of 1, which is used when the count value is not provided. The function body repeats the word string count times and returns the result as a new string.
+- Functions in Rust can also use the return keyword to explicitly return a value from the function. For example:
+```
+fn divide(x: f32, y: f32) -> Result<f32, String> { 
+  if y == 0.0 { 
+    return Err(String::from("Division by zero"));
+  }
+  Ok(x / y)
+}
+
+fn main() { 
+  match divide(10.0, 2.0) { 
+    Ok(result) => println!("Result: {}", result),
+    Err(err) => println!("Error: {}", err), 
+  }
+  match divide(10.0, 0.0) { 
+    Ok(result) => println!("Result: {}", result),
+    Err(err) => println!("Error: {}", err), 
+  }
+}
+```
+- In this code, a function named divide is defined that takes two parameters x and y of type f32, which are floating-point numbers. If y is equal to 0.0, the function returns an error using the Err enum. Otherwise, the function returns the division of x and y as a Result<f32, String> value using the Ok enum. The match statement is used to handle the possible error and result values returned by the function.
+- Overall, functions in Rust are a powerful tool for encapsulating a block of code that performs a specific task, returning values, and accepting parameters. Functions can also have default parameter values, use the return keyword to explicitly return a value, and return errors using the Result enum.
+```
+
+```
