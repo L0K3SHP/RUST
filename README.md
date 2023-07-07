@@ -762,5 +762,186 @@ fn main() {
 - In this code, a function named divide is defined that takes two parameters x and y of type f32, which are floating-point numbers. If y is equal to 0.0, the function returns an error using the Err enum. Otherwise, the function returns the division of x and y as a Result<f32, String> value using the Ok enum. The match statement is used to handle the possible error and result values returned by the function.
 - Overall, functions in Rust are a powerful tool for encapsulating a block of code that performs a specific task, returning values, and accepting parameters. Functions can also have default parameter values, use the return keyword to explicitly return a value, and return errors using the Result enum.
 ```
+#![allow(unused)]
+// This is comments
 
+use std::io::{self, Read};
+use std::cmp::Ordering;
+fn main() {
+  // Function - small organised code
+  whoami();
+  calculator(8,9);
+  // return value
+  println!("{}",mul(5, 9));
+  // multiple return
+  let (added, multiply) = add_mul(5, 90);
+  println!("Add: {}, Mul: {}",added,multiply);
+  }
+
+fn whoami(){
+  let name = "Lok";
+  let age = 24;
+  println!("My name is {} and i am {} years old",name,age);
+}
+
+// with parameter
+fn calculator(x:i32, y:i32)
+{
+  let mut x_f = x as f64;
+  let mut y_f = y as f64;
+  println!("Calculation of {} and {}",x,y);
+  println!("Addition:  {}",x+y);
+  println!("Subtraction:  {}",x-y);
+  println!("Multiplication:  {}",x*y);
+  println!("Division:  {}",x_f/y_f);
+}
+
+// return value
+fn mul(a:i32, b:i32) -> i32 {
+  a*b
+}
+
+// multiple return
+fn add_mul(p: i32, q: i32) -> (i32,i32) {
+  (p+q,p*q)
+}
 ```
+
+## Vectors
+- In Rust, vectors are a dynamic, resizable array type that can store a variable number of elements of the same type. Vectors are defined using the Vec struct and can be used to store and manipulate collections of data.
+- To create a new vector, you can use the Vec::new() method or the vec! macro:
+```
+let mut vec1 = Vec::new(); // creates an empty vector
+let vec2 = vec![1, 2, 3]; // creates a vector with three elements
+```
+- In this code, vec1 is created using the Vec::new() method, which creates an empty vector that can be populated later. vec2 is created using the vec! macro, which creates a vector with three elements: 1, 2, and 3.
+- You can add elements to a vector using the push method:
+```
+let mut vec = Vec::new();
+vec.push(1);
+vec.push(2);
+vec.push(3);
+```
+- In this code, the push method is used to add the values 1, 2, and 3 to the vec vector.
+- You can access elements of a vector using square bracket notation and the index of the element:
+```
+let vec = vec![1, 2, 3];
+let second_element = vec[1];
+println!("The second element is {}", second_element);
+```
+- In this code, the vec vector is created using the vec! macro, and the second element is accessed using square bracket notation and the index 1. The resulting value, 2, is then printed to the console.
+- You can also use methods like len and iter to get the length of a vector and iterate over its elements:
+```
+let vec = vec![1, 2, 3];
+println!("The length of the vector is {}", vec.len());
+
+for element in vec.iter() {
+  println!("Element: {}", element);
+} 
+```
+- In this code, the len method is used to get the length of the vec vector, which is then printed to the console. The iter method is used to create an iterator over the elements of the vector, which is then used in a for loop to print each element to the console.
+- Overall, vectors in Rust are a powerful and flexible tool for storing and manipulating collections of data. Vectors are dynamically resizable, can store a variable number of elements of the same type, and support a variety of useful methods for adding, accessing, and iterating over their elements
+```
+fn main() {
+  //Vector-  Similar to Array
+  // Slower then array, but more flexible
+
+  let mut vec1 = Vec::new();
+  let mut vec2 = vec![1,2,3,4,5,6];
+
+  // Push data at the nth position
+  vec1.push(1);
+  vec2.push(8);
+
+  //Length
+
+  println!("length of Vector 2 {}",vec2.len());
+
+  // Accees element in vector
+  let ele_2 = vec2[5];
+  println!("{}",ele_2);
+
+  for i in vec1.iter(){
+    println!("{}",i);
+  }
+
+  for j in vec2.iter(){
+    println!("{}",j);
+  }
+  }
+```
+
+## Structures
+- In Rust, a structure, also known as a struct, is a custom data type that groups together zero or more variables of different types under a single name. A struct is defined using the struct keyword followed by the name of the struct and the variables it contains.
+Here's an example of a struct definition:
+```
+struct Rectangle { width: u32, height: u32, }
+```
+- In this code, a Rectangle struct is defined that contains two variables: width and height. Both variables are of type u32, which is an unsigned 32-bit integer type.
+- You can create an instance of a struct using the struct's name and the values for its variables:
+```
+let rect = Rectangle { width: 30, height: 50 };
+```
+- In this code, an instance of the Rectangle struct is created with a width of 30 and a height of 50. The resulting instance is stored in the rect variable.
+You can access the variables of a struct using dot notation:
+```
+let area = rect.width * rect.height;
+println!("The area of the rectangle is {}", area);
+```
+- In this code, the width and height variables of the rect instance are accessed using dot notation, and their product is used to calculate the area of the rectangle.
+- Structs in Rust can also have methods defined on them, which can be used to perform operations on the struct's variables:
+```
+impl Rectangle { 
+  fn area(&self) -> u32 {
+    self.width * self.height
+   }
+}
+let rect = Rectangle {width: 30, height: 50 };
+let area = rect.area();
+
+println!("The area of the rectangle is {}", area);
+```
+- In this code, an impl block is used to define a method named area on the Rectangle struct. The area method takes a reference to the self instance and returns the product of its width and height variables. The area method is then called on the rect instance, and its return value is printed to the console.
+- Overall, structs in Rust are a powerful tool for defining custom data types that group together related variables under a single name. Structs can be used to create instances that store data, access and modify the variables of an instance, and define methods that operate on the instance's variables.
+```
+fn main() {
+  // Structures
+
+  struct Rectangle{
+    width: u32,
+    height: u32,
+  }
+
+  let  rect = Rectangle{width: 30, height: 80};
+
+  let area = rect.width*rect.height;
+
+  impl Rectangle{
+    fn area(&self) -> u32{
+      self.width * self.height
+    }
+      
+  }
+
+  let area = rect.area();
+
+  println!("Area of Rectangle with width {} x height {} = {}", rect.width,rect.height,area);
+ 
+  struct car {
+    make: String,
+    model: String,
+    year: u32,
+    price: f64,
+  }
+
+  let mut Car = car{
+    make: String::from("Lamborgini"),
+    model: String::from("Huracan"),
+    year: 2020,
+    price: 320000.00
+  };
+
+  println!("The cost of a {} {} {} is ${}", Car.year,Car.model,Car.make,Car.price);
+  }
+```
+
