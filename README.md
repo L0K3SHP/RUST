@@ -944,4 +944,126 @@ fn main() {
   println!("The cost of a {} {} {} is ${}", Car.year,Car.model,Car.make,Car.price);
   }
 ```
+## Enums
+- In Rust, an enumeration, also known as an enum, is a custom data type that allows you to define a set of named values. Enums are defined using the enum keyword followed by the name of the enum and the possible values it can take.
+Here's an example of an enum definition:
+```
+enum Direction {
+  Up,
+  Down, 
+  Left,
+  Right,
+}
+```
+- In this code, a Direction enum is defined that contains four possible values: Up, Down, Left, and Right. Each of these values is an enum variant, and can be thought of as a distinct value of the Direction type.
+You can create an instance of an enum by specifying one of its variant names:
+```
+let direction = Direction::Up;
+```
+- In this code, an instance of the Direction enum is created with the Up variant. The resulting instance is stored in the direction variable.
+Enums in Rust can also contain data associated with each variant:
+```
+enum Shape { 
+  Circle(f32),
+  Rectangle(f32, f32),
+}
+let circle = Shape::Circle(10.0);
+let rectangle = Shape::Rectangle(30.0, 40.0);
+```
+- In this code, a Shape enum is defined that contains two possible values: Circle and Rectangle. The Circle variant contains a single f32 value representing the radius of the circle, and the Rectangle variant contains two f32 values representing the width and height of the rectangle. An instance of the Shape enum is created for a circle with a radius of 10.0, and another instance is created for a rectangle with a width of 30.0 and a height of 40.0.
+Enums in Rust can also have methods defined on them, which can be used to perform operations on the enum's variants:
+```
+impl Direction { 
+  fn opposite(&self) -> Direction {
+    match *self {
+      Direction::Up => Direction::Down,
+      Direction::Down => Direction::Up,
+      Direction::Left => Direction::Right,
+      Direction::Right => Direction::Left,
+     }
+  }
+}
 
+let direction = Direction::Up;
+let opposite_direction = direction.opposite();
+```
+- In this code, an impl block is used to define a method named opposite on the Direction enum. The opposite method takes a reference to the self instance and returns the opposite direction. The match expression is used to pattern match on the current direction and return the opposite direction. The opposite method is then called on the direction instance, and its return value is stored in the opposite_direction variable.
+- Overall, enums in Rust are a powerful tool for defining custom data types that represent a set of named values. Enums can be used to create instances that store data associated with each variant, access and modify the data associated with an instance, and define methods that operate on the enum's variants.
+```
+fn main() {
+  // Enum
+  // defined set of named values
+
+  enum Direction{
+    Up,
+    Down,
+    Left,
+    Right,
+  }
+
+  let up = Direction::Up;
+
+ #[derive(Debug)]
+  enum Shape{
+    Circle(f32),
+    Rectangle(f32,f32),
+  }
+
+  let circle= Shape::Circle(12.0);
+  let rectangle = Shape::Rectangle(1052.56, 455.2);
+
+  print!("{:?}, {:?}",circle,rectangle);
+  }
+```
+## Generics
+- In Rust, generics are a language feature that allows you to define a function or a data type without specifying the specific types that it will work with. Instead, generic functions and types can work with any type that satisfies a set of constraints defined by the generic.
+- Generics are denoted using angle brackets <...>, and the type parameter is typically given a name that starts with a capital letter. Here's an example of a generic function that takes two arguments of the same type and returns their sum:
+```
+fn sum<T: std::ops::Add<Output=T>>(a: T, b: T) -> T { 
+  a + b
+}
+
+let x = sum(1, 2);
+let y = sum(1.0, 2.0);
+println!("{} {}", x, y); // prints "3 3"
+```
+- In this code, a sum function is defined that takes two arguments of type T and returns their sum, where T is a generic type parameter that satisfies the std::ops::Add trait. The std::ops::Add trait is a trait that defines the + operator and is implemented by many numeric types in Rust. The Output=T syntax is used to specify that the return type of the Add operation is the same as the input type T.
+- The sum function is then called with two integer arguments 1 and 2, and with two floating-point arguments 1.0 and 2.0. In both cases, the function returns the sum of the two arguments as a value of the same type.
+Generics can also be used to define generic data types, such as a generic vector type:
+```
+struct Vector<T> { 
+  x: T,
+  y: T,
+}
+
+let v = Vector { x: 1.0, y: 2.0 };
+println!("({}, {})", v.x, v.y); // prints "(1, 2)"
+```
+- In this code, a Vector struct is defined that contains two variables x and y, both of type T, which is a generic type parameter. An instance of the Vector struct is then created with x and y values of 1.0 and 2.0, respectively, and the values of x and y are printed to the console.
+- Overall, generics in Rust provide a powerful tool for defining functions and data types that can work with a wide range of types, without needing to specify the exact type at compile time. This allows for greater flexibility and code reuse, as generic functions and types can be used with any type that satisfies a set of constraints defined by the generic.
+```
+use std::ops::*;
+
+fn main() {
+  //Generics
+
+  fn sum<T: Add<Output=T>>(a: T,b:T)->T{
+    a + b
+  }
+
+  let x = sum(5,6);
+  let y = sum(54.64,84.65);
+  println!("The value of x is {}",x);
+  println!("The value of y is {}",y);
+  print!("Adding of numbers {}",sum(54,98));
+
+  struct Item<T>{
+    a:T,
+    b:T,
+  }
+
+  let i = Item{a: 5, b: 55};
+
+  println!("{}, {}", i.a,i.b);
+  }
+```
