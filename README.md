@@ -1273,4 +1273,273 @@ fn main() {
     s.len() //return the length of the string pointed to s
   }
 ```
+## File I/O
+- File I/O (input/output) is an important part of many applications, and Rust provides a set of standard library functions for working with files.
+- Here are some examples of how to create, write, append, read, and delete files in Rust:
+ **Creating a file**
+- To create a file in Rust, you can use the File::create function. This function takes a Path argument that specifies the file to create, and returns a Result<File> that contains a File handle to the newly created file.
+```
+use std::fs::File;
 
+fn main() -> std::io::Result<()> {
+  let file = File::create("example.txt")?;
+  Ok(())
+}
+```
+- In this example, the File::create function is used to create a new file named "example.txt". The ? operator is used to handle any errors that may occur during the file creation process.
+**Writing to a file**
+- To write data to a file in Rust, you can use the File::write_all function. This function takes a byte slice as its argument and writes the contents of the slice to the file.
+```
+use std::fs::File;
+use std::io::prelude::*;
+
+fn main() -> std::io::Result<()> {
+  let mut file = File::create("example.txt")?;
+  file.write_all(b"Hello, world!")?;
+  Ok(())
+}
+```
+- In this example, the File::write_all function is used to write the string "Hello, world!" to the file. The b prefix is used to convert the string to a byte slice.
+**Appending to a file**
+- To append data to a file in Rust, you can use the File::open function to open the file in append mode, and then use the File::write_all function to write data to the end of the file.
+```
+use std::fs::OpenOptions;
+use std::io::prelude::*;
+
+fn main() -> std::io::Result<()> {
+  let mut file = OpenOptions::new().append(true).open("example.txt")?;
+  file.write_all(b"More data")?;
+  Ok(())
+}
+```
+- In this example, the OpenOptions::new().append(true) function is used to open the file in append mode, and the File::write_all function is used to write the string "More data" to the end of the file.
+**Reading from a file**
+- To read data from a file in Rust, you can use the File::read_to_string function to read the entire contents of the file into a string.
+```
+use std::fs::File;
+use std::io::prelude::*;
+
+fn main() -> std::io::Result<()> {
+  let mut file = File::open("example.txt")?;
+  let mut contents = String::new();
+  file.read_to_string(&mut contents)?;
+  println!("{}", contents);
+  Ok(())
+}
+```
+- In this example, the File::open function is used to open the file, the String::new function is used to create a new empty string, and the File::read_to_string function is used to read the entire contents of the file into the string. The contents of the string are then printed to the console.
+
+**Deleting a file**
+- To delete a file in Rust, you can use the std::fs::remove_file function. This function takes a Path argument that specifies the file to delete.
+```
+use std::fs;
+
+fn main() -> std::io::Result<()> {
+  fs::remove_file("example.txt")?;
+  Ok(())
+}
+```
+- In this example, the fs::remove_file function is used to delete the "example.txt" file.
+- Overall, Rust provides a set of standard library functions for working with files that make it easy to perform common file I/O operations such as creating, writing, appending, reading, and deleting files. By using these functions, Rust applications can efficiently and safely work with files, without the need for external libraries or manual memory management.
+```
+use std::{io::*, fs};
+use std::fs::{File, OpenOptions};
+// use std::io::Write;
+use std::io::prelude::*;
+use std::fs::*;
+
+fn main() {
+  
+  // File create
+  let mut file = File::create("src/hello.txt").expect("Failed to create file!");
+
+  // Write to a file
+   file.write_all("Hello, World!\n".as_bytes()).expect("Failed to write file");;
+  //file.write_all(b"Hello, World!").expect("Failed to write file");
+
+  // Append to file
+  let mut file = OpenOptions::new().append(true).open("src/hello.txt").expect("Failed to open the file");
+  file.write_all(b"Hello Again!.\n").expect("Failed to append the files ");
+  
+  // Read file
+  let mut file = File::open("src/hello.txt").expect("unable to open file");
+  let mut file_content = String::new();
+  file.read_to_string(&mut file_content).unwrap();
+  println!("{}",file_content);
+
+  //Delete file
+  fs::remove_file("src/hello.txt").expect("Failed to delete the file!");
+}
+```
+
+## Error Handling
+- In Rust, error handling is typically done using the Result enum. The Result type represents either a success with a value, or an error with an associated message. For example, the Result<T, E> type can be used to represent either a successful computation that returns a value of type T, or an error that returns a value of type E. This can be useful for propagating errors up the call stack or for handling errors in a concise and idiomatic way.
+- **Helper Methods:**
+- Rust provides a few helpful methods on the Result type for handling errors. One of these methods is the unwrap() method, which returns the value of the Ok variant of the Result type, or panics with the error message of the Err variant. Another helpful method is the expect(msg: &str) method, which is similar to unwrap() but allows you to provide a custom error message that will be displayed if the Err variant is encountered.
+Example:
+```
+fn divide(x: i32, y: i32) -> Result<i32, String> {
+  if y == 0 {
+    return Err(String::from("Cannot divide by zero"));
+  }
+  Ok(x / y)
+} 
+
+fn main() { 
+  let result = divide(10, 2); 
+  match result { 
+    Ok(value) => println!("Result: {}", value), 
+    Err(msg) => println!("Error: {}", msg), 
+  }
+}
+```
+- In this example, the divide() function returns a Result type that represents either a successful computation with a value of type i32, or an error with an associated message of type String. The main() function calls divide() and then pattern matches on the returned value to handle the success and error cases.
+- The unwrap() method can be used to get the value of the Ok variant directly:
+```
+fn main() { 
+  let result = divide(10, 2).unwrap(); 
+  println!("Result: {}", result);
+}
+```
+- This code will panic if the Err variant is returned from the divide() function.
+- The expect() method can be used to provide a custom error message:
+```
+fn main() {
+  let result = divide(10, 0).expect("Division by zero");
+}
+```
+- This code will panic with the message "Division by zero" if the Err variant is returned from the divide() function.
+- **The ? Operator:**
+- The ? operator in Rust can be used as a shorthand for propagating errors up the call stack. It can only be used in functions that return a Result type, and it can only be used with the Result type. When the ? operator is used with a Result value, it will either return the value of the Ok variant if it is present, or propagate the error of the Err variant up the call stack.
+```
+Code before using ? Operator:
+
+use std::fs::File;
+use std::io::Read;
+
+fn read_file(path: &str) -> Result<String, std::io::Error> { 
+  let mut file = match File::open(path) { 
+    Ok(file) => file, 
+    Err(e) => return Err(e),
+  };
+  let mut contents = String::new();
+  match file.read_to_string(&mut contents) {
+    Ok(_) => Ok(contents),
+    Err(e) => Err(e),
+  }
+}
+
+fn main() { 
+  let result = read_file("test.txt"); 
+  match result { 
+    Ok(contents) => println!("File contents: {}", contents), 
+    Err(err) => println!("Error reading file: {}", err), 
+  }
+}
+```
+- In this version of the code, the read_file() function uses match expressions to handle the Result values returned by the File::open() and read_to_string() methods. If either method returns an Err value, the error is propagated up the call stack using the Err variant of the Result type.
+- The main() function remains the same, using a match expression to handle the Result value returned by the read_file() function.
+Example using ? Operator:
+```
+fn read_file(path: &str) -> Result<String, std::io::Error> {
+  let mut file = File::open(path)?;
+  let mut contents = String::new();
+  file.read_to_string(&mut contents)?;
+  Ok(contents)
+}
+
+fn main() {
+  let result = read_file("test.txt");
+  match result {
+    Ok(contents) => println!("File contents: {}", contents),
+    Err(err) => println!("Error reading file: {}", err),
+  }
+}
+```
+- While the ? operator can be a more concise and idiomatic way to handle errors in Rust, using match expressions can be useful for more complex error handling scenarios or when you need more fine-grained control over how errors are handled.
+- **Panic Macros:**
+```
+fn divide(x: i32, y: i32) -> i32 {
+  if y == 0 {
+    panic!("Cannot divide by zero");
+  } 
+  x / y
+}
+
+fn main() { 
+  let result = divide(10, 0);
+  println!("Result: {}", result);
+}
+```
+- In this example, the divide() function panics with the message "Cannot divide by zero" if the y parameter is 0. The main() function calls divide() with 10 and 0 as arguments, which causes the divide() function to panic. Since the divide() function does not return a Result type, the panic!() macro is used to halt the program and display an error message.
+- The panic!() macro can be useful for handling unexpected or unrecoverable errors in a program. However, it should be used sparingly, as it can cause the program to exit abruptly and may not provide a graceful way to recover from the error.
+```
+use std::{io::*, result};
+use std::{io::*, fs};
+use std::fs::{File, OpenOptions};
+// use std::io::Write;
+use std::io::prelude::*;
+use std::fs::*;
+
+// HELPER METHODS - unwrap(), except()
+// Two types of errors: recoverable and uncoverable 
+// Recoverable - result enum & option enum
+// Unrecoverable - panic ! macro
+
+// Result enum - Result<T, E>
+
+//? Operator
+
+fn main() {
+
+  // Type 1
+   
+  let result = divide(12,0);
+  match result {
+    Ok(value) => println!("Result: {}", value),
+    Err(msg) => println!("Error: {}", msg),
+  }
+
+  //unwrap
+  let result = divide(12,0).unwrap();
+  println!("Result:{}",result);
+
+  // Except 
+  let result = divide(12,0).expect("Cannot divide by zero");
+  println!("Result:{}",result);
+
+  //Panic
+  let result = divide_panic(12,0);
+  println!("Result:{}",result);
+
+  //? Operator
+  let result = read_file("src/test.txt");
+  match result{
+    Ok(conetent) => println!("File Content: {}", conetent),
+    Err(err)=> println!("Error file reading:{}",err),
+  }
+
+}
+
+fn divide(x:i32,y:i32) -> result::Result<i32,String> {
+  if y == 0{
+    return Err(String::from("Cannot divide by zero."));
+  }
+  Ok(x/y)
+}
+
+fn divide_panic(x:i32,y:i32) -> i32 {
+  if y == 0{
+    panic!("cannot divide by zero,");
+  }
+  x/y
+}
+
+fn read_file(path:&str) -> result::Result<String, Error>{
+  let mut file = File::open(path)?;
+
+  let mut contents = String::new();
+  file.read_to_string(&mut contents)?;
+  Ok(contents)
+} 
+```
