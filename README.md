@@ -1015,6 +1015,7 @@ fn main() {
   print!("{:?}, {:?}",circle,rectangle);
   }
 ```
+
 ## Generics
 - In Rust, generics are a language feature that allows you to define a function or a data type without specifying the specific types that it will work with. Instead, generic functions and types can work with any type that satisfies a set of constraints defined by the generic.
 - Generics are denoted using angle brackets <...>, and the type parameter is typically given a name that starts with a capital letter. Here's an example of a generic function that takes two arguments of the same type and returns their sum:
@@ -1067,3 +1068,144 @@ fn main() {
   println!("{}, {}", i.a,i.b);
   }
 ```
+
+## Traits
+- In Rust, traits are a language feature that allows you to define a set of methods that can be implemented by any type that satisfies the requirements of the trait. Traits provide a way to define a common interface for types that may have different implementations, and allow you to write generic code that can work with a wide range of types.
+- Traits are defined using the trait keyword followed by the name of the trait and a set of method signatures. Here's an example of a trait definition:
+```
+trait Drawable { 
+  fn draw(&self);
+}
+``` 
+- In this code, a Drawable trait is defined that contains a single method draw. The draw method takes a reference to self and does not return a value.
+- Traits can be implemented for any type that satisfies the requirements of the trait. Here's an example of a struct that implements the Drawable trait:
+```
+struct Circle { 
+  radius: f32,
+}
+
+impl Drawable for Circle {
+  fn draw(&self) { 
+    println!("Drawing a circle with radius {}", self.radius);
+   }
+} 
+
+let circle = Circle { radius: 10.0 }; 
+circle.draw(); // prints "Drawing a circle with radius 10"
+```
+- In this code, a Circle struct is defined that contains a single variable radius. The Drawable trait is then implemented for the Circle struct by defining the draw method for the struct. The draw method is called on an instance of the Circle struct, and the result is printed to the console.
+- Traits can also be used to define generic functions and types that work with any type that satisfies the requirements of the trait. Here's an example of a generic function that takes a reference to any type that implements the Drawable trait and calls its draw method:
+```
+fn draw_shape<T: Drawable>(shape: &T) { 
+  shape.draw();
+}
+
+let circle = Circle { radius: 10.0 };
+draw_shape(&circle); // prints "Drawing a circle with radius 10" 
+```
+- In this code, a draw_shape function is defined that takes a reference to any type T that implements the Drawable trait. The function calls the draw method on the shape and prints the result to the console. The draw_shape function is then called with an instance of the Circle struct, and the result is printed to the console.
+- Overall, traits in Rust provide a powerful tool for defining a common interface for types that may have different implementations. Traits allow you to write generic code that can work with a wide range of types, and can be used to define generic functions and types that work with any type that satisfies the requirements of the trait.
+```
+eg 1
+
+trait Damage {
+  fn damage(self: &mut Self);
+    
+}
+
+#[derive(Debug)]
+
+struct HP{
+  hp_remain: i32,
+}
+
+impl Damage for HP {
+  fn damage(self: &mut Self){
+    self.hp_remain -= 1;
+  }
+}
+
+fn main() {
+  // Traits -  A group od methods that are defined for any particular type.
+  let mut hp = HP{hp_remain: 100};
+  hp.damage();
+  println!("You took a damage! HP remaing:{:?}",hp);
+  }
+
+eg 2
+trait Drawable{
+  fn draw(&self);
+}
+
+struct Circle{
+  radius: i32,
+}
+
+impl Drawable for Circle{
+  fn draw(&self) {
+    println!("Drawable a circle with radius {}", self.radius);
+  }
+}
+
+// Calling traits via generics
+fn draw_shape<T: Drawable>(shape: &T){
+  shape.draw();
+}
+
+fn main() {
+  let circle = Circle{radius: 10};
+  circle.draw();
+
+  //Genrics
+  draw_shape(&circle);
+  }
+```
+
+## Memory Management
+### Ownership
+- Ownership is a central concept in Rust's memory management system. In Rust, every value has an owner, which is a variable that is responsible for managing the memory used by that value. When the owner goes out of scope, the memory is automatically freed.
+Here's an example of ownership in Rust:
+```
+fn main() { 
+  let s = String::from("hello"); // s is the owner of the string "hello"
+  println!("{}", s); // prints "hello" 
+} // s goes out of scope and the memory is freed
+```
+- In this code, a new String value is created using the String::from function, and s is assigned as the owner of the String value. When s goes out of scope at the end of the function, the memory used by the String value is automatically freed.
+- Ownership can also be transferred between variables using the move keyword:
+```
+fn main() {
+  let s1 = String::from("hello"); // s1 is the owner of the string "hello" 
+  let s2 = s1; // s2 takes ownership of the string "hello" println!("{}", s2); // prints "hello" 
+} // s2 goes out of scope and the memory is freed, s1 is invalid since ownership was transferred
+```
+- In this code, ownership of the String value is transferred from s1 to s2 using the move keyword. When s2 goes out of scope, the memory used by the String value is freed, and s1 is no longer valid since ownership was transferred.
+- Overall, ownership is a key concept in Rust's memory management system that allows for safe and efficient memory management without requiring garbage collection or manual memory management. By assigning ownership to values and automatically freeing memory when the owner goes out of scope, Rust provides a memory management system that is both safe and efficient.
+```
+/* In Rust, memorty is managed through a system of ownership and borrowing.
+  Each value in Rust has an owner.
+  which is responsible for managing the memoty used by the value.
+  When a value goes out of scop, its memory is automatically freed.
+  This eleminates the need for manual memory management or garbage collection.
+  which can lead to bugs, performance issue, and security vulnerbilities.
+
+  STACK vs HEAP
+  Stack is dast, values are stored inorder and all are fuix-sized. Uses LIFO.
+  Heap is slow, values are unorders and of a variable size.
+  The heap uses a return address for requested space called a pointer.
+
+  Ownership - has 3 rules.
+  Each value has a owner (owned by a variable)
+  There can only be one owner at atime
+  When the owner goes out of scope, the memoty becomes free */
+
+fn main() {
+  let name = String::from("Random");
+  let new_name = name;
+  let new_name2 = new_name.clone();
+  print!("Hello, my nme is {}.",new_name);
+  //print!("Hello, my nme is {}.",name);
+  print!("Hello, my nme is {}.",new_name2);
+  }
+
+``
