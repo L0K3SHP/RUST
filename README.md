@@ -1207,5 +1207,70 @@ fn main() {
   //print!("Hello, my nme is {}.",name);
   print!("Hello, my nme is {}.",new_name2);
   }
+```
 
-``
+### Borrowing and Refernces.
+- Borrowing and references are key concepts in Rust's memory management system. In Rust, a reference is a pointer to a value that does not own the value. Instead, it borrows the value from another owner for a specific period of time. The borrowing mechanism ensures that the value is not modified while it is being borrowed.
+Here's an example of borrowing and references in Rust:
+```
+fn main() { 
+  let s1 = String::from("hello"); // s1 is the owner of the string "hello"
+  let len = calculate_length(&s1); // pass a reference to s1 to the calculate_length function
+  println!("The length of '{}' is {}.", s1, len); 
+}
+
+fn calculate_length(s: &String) -> usize { // s is a reference to a String value 
+  s.len() // return the length of the string pointed to by s 
+} // s goes out of scope, but because it's a reference and doesn't own the string, nothing happens
+```
+- In this code, s1 is the owner of the String value "hello". The calculate_length function takes a reference to s1 as its argument using the & operator. This allows calculate_length to borrow the String value without taking ownership of it. When the reference s goes out of scope at the end of the function, the memory used by the String value is not freed, because the reference doesn't own the value.
+- Borrowing in Rust provides a way to safely access and modify values without taking ownership of them. When a value is borrowed, the borrowing code must follow certain rules to ensure that the borrowed value is not modified or accessed in an unsafe way. These rules are enforced by Rust's borrow checker, which analyzes the code to ensure that all references to a value have the same lifetime as the owner of the value, and that no mutable references are created while the value is already being borrowed.
+- Overall, borrowing and references are key concepts in Rust's memory management system that allow for safe and efficient access to values without taking ownership of them. By using references, Rust provides a powerful mechanism for managing memory and ensuring that values are accessed in a safe and efficient way.
+- Dereferencing is the process of following a pointer to access the value that it points to. In Rust, dereferencing is done using the * operator.
+Here's an example of dereferencing in Rust:
+```
+fn main() { 
+  let x = 10; // x is an integer variable
+  let ptr = &x; // ptr is a reference to x
+  println!("{}", *ptr); // dereference ptr to access the value of x
+}
+```
+- In this code, x is an integer variable and ptr is a reference to x. To access the value of x through the reference ptr, we use the * operator to dereference the pointer and access the value that it points to.
+- Dereferencing is also commonly used with dynamically allocated values, such as those created using the Box<T> type. Here's an example of dereferencing a Box<T> pointer in Rust:
+```
+fn main() {
+  let x = Box::new(10); // x is a pointer to an integer value
+  let ptr = &x; // ptr is a reference to x
+  println!("{}", **ptr); // double dereference ptr to access the value of x
+}
+```
+- In this code, x is a pointer to an integer value that is created using the Box::new function. To access the value of x through the reference ptr, we use a double dereference with **ptr to first access the Box<T> value, and then the underlying integer value.
+- Overall, dereferencing is an important operation in Rust for accessing values through pointers and references. By using the * operator, Rust provides a safe and efficient way to follow pointers and access the values that they point to
+```
+fn main() {
+  //Refernve - &
+  // Borrowing has to match mutability
+
+  // eg 1
+  let mut a = String::from("Loke");
+  let b = &mut a;
+  println!("My name is {}.", *b);
+
+  //eg 2
+  let s1 = String::from("Hello guys"); // Owner is s1
+  let len = cal_len(&s1); // pass a refence to s1 to the fuction cal_len
+  println!("Length of {} is {}.", s1, len);
+
+  let mut x = 10;
+  let y = &mut x;
+  println!("{}", *y); // mutable borrow 
+  *y += 1;
+  println!("{}",x); // immutable burrow
+  
+  }
+
+  fn cal_len(s: &String) -> usize{ //s is refernce to a String value
+    s.len() //return the length of the string pointed to s
+  }
+```
+
